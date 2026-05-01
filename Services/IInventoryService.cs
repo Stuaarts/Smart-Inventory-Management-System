@@ -13,4 +13,10 @@ public interface IInventoryService
         int quantity,
         string? reason,
         string? userId);
+
+    Task<Order> CreateOrderAsync(OrderCreateViewModel viewModel, string? userId);
+
+    Task<Order> CompleteOrderAsync(int orderId, string? userId);
+
+    Task<Order> CancelOrderAsync(int orderId, string? userId);
 }

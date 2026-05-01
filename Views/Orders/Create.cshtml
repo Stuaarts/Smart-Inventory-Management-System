@@ -1,0 +1,73 @@
+@model OrderCreateViewModel
+
+@{
+    ViewData["Title"] = "New Order";
+}
+
+<div class="page-header">
+    <div>
+        <p class="page-kicker">Sales desk</p>
+        <h1>New Order</h1>
+        <p>Capture the sale as a draft or complete it immediately to reduce inventory.</p>
+    </div>
+</div>
+
+<form asp-action="Create" class="surface content-narrow">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label asp-for="CustomerName" class="form-label"></label>
+            <input asp-for="CustomerName" class="form-control" placeholder="Walk-in customer" />
+            <span asp-validation-for="CustomerName" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="CustomerEmail" class="form-label"></label>
+            <input asp-for="CustomerEmail" class="form-control" placeholder="customer@example.com" />
+            <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Status" class="form-label"></label>
+            <select asp-for="Status" class="form-select">
+                <option value="@OrderStatus.Draft">Save as draft</option>
+                <option value="@OrderStatus.Completed">Complete and reduce stock</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="section-heading">
+        <h2>Order Items</h2>
+        <span class="text-secondary">Add up to five products</span>
+    </div>
+
+    <div class="order-lines">
+        @for (var i = 0; i < Model.Items.Count; i++)
+        {
+            <div class="order-line">
+                <div>
+                    <label asp-for="Items[i].ProductId" class="form-label">Product</label>
+                    <select asp-for="Items[i].ProductId" class="form-select" asp-items="Model.ProductOptions">
+                        <option value="">Select product</option>
+                    </select>
+                </div>
+                <div>
+                    <label asp-for="Items[i].Quantity" class="form-label">Quantity</label>
+                    <input asp-for="Items[i].Quantity" class="form-control" min="0" />
+                    <span asp-validation-for="Items[i].Quantity" class="text-danger"></span>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">Create Order</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

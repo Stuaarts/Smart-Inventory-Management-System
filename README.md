@@ -1,19 +1,20 @@
-# Smart Inventory Management System
+# StockPilot - Smart Inventory Management System
 
-A  inventory management web application built with ASP.NET Core MVC, Entity Framework Core, PostgreSQL, ASP.NET Core Identity, Razor Views, and Bootstrap.
+StockPilot is an inventory management platform for small business teams that need a clear view of products, suppliers, stock levels, sales orders, and inventory activity.
 
-The app is branded as **StockPilot** in the UI.
+Built with ASP.NET Core MVC, Entity Framework Core, PostgreSQL, ASP.NET Core Identity, Razor Views, and Bootstrap.
 
 ## Features
 
-- User authentication with ASP.NET Core Identity
-- Role-based authorization for Admin, Manager, and Staff users
-- Product, category, and supplier CRUD workflows
+- Secure login and role-based access for Admin, Manager, and Staff users
+- Product, category, and supplier management
 - Product search, category/supplier filters, stock status filters, sorting, and pagination
 - Low-stock and out-of-stock alerts
-- Dashboard cards for product counts, alerts, inventory value, and recent movements
-- Stock movement tracking with business rules that prevent negative inventory
-- Audit log records for important actions
+- Dashboard metrics for inventory value, potential revenue, order activity, and recent stock movements
+- Stock movement tracking for receiving, removing, adjusting, selling, returning, and damaged stock
+- Sales order creation with draft and completed workflows
+- Automatic stock reduction and stock movement records when orders are completed
+- Audit log records for important system actions
 - PostgreSQL local development with Docker Compose
 
 ## Tech Stack
@@ -52,16 +53,16 @@ The app is branded as **StockPilot** in the UI.
 
 3. Open the URL shown in the terminal.
 
-The app applies EF Core migrations and seeds demo roles, users, categories, suppliers, products, stock movements, and audit logs on startup.
+On startup, StockPilot applies EF Core migrations and seeds demo roles, users, categories, suppliers, products, stock movements, and audit logs.
 
 ## Database Design
 
-- `Products`: product catalog, SKU, prices, stock levels, category, supplier, active state
+- `Products`: catalog records with SKU, prices, stock levels, category, supplier, and active status
 - `Categories`: product grouping with delete protection when products exist
 - `Suppliers`: vendor/contact records connected to products
 - `StockMovements`: inventory history for stock in, stock out, adjustments, sales, returns, and damaged stock
-- `Orders` and `OrderItems`: prepared for the next phase of sales order management
-- `AuditLogs`: recent actions performed in the system
+- `Orders` and `OrderItems`: sales order records and captured line-item pricing
+- `AuditLogs`: tracked system actions
 - `AspNetUsers`, `AspNetRoles`, and related Identity tables: authentication and authorization
 
 ## Business Rules
@@ -69,18 +70,19 @@ The app applies EF Core migrations and seeds demo roles, users, categories, supp
 - Product SKU must be unique
 - Cost, unit price, stock quantity, and minimum stock cannot be negative
 - Products must belong to a category
-- Stock cannot be removed below zero
+- Stock cannot be reduced below zero
 - Every stock adjustment creates a `StockMovement`
+- Completing an order reduces product stock and records sale movements
+- Draft orders can be cancelled without reducing stock
 - Categories cannot be deleted while products are assigned
 - Suppliers with products are marked inactive instead of removed
 - Products with stock/order history are marked inactive instead of removed
 
-## Roadmap
+## Future Enhancements
 
-- Full order creation flow that reduces stock when completed
+- Deployment and production environment setup
 - Product image upload
 - CSV export
 - PDF reports
 - Email alerts
 - Unit and integration tests
-- Deployment documentation

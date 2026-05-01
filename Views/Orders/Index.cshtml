@@ -2,24 +2,53 @@
 
 @{
     ViewData["Title"] = "Orders";
+    var selectedStatus = ViewData["Status"] as string;
 }
 
-<div class="mb-4">
-    <h1 class="h2 mb-1">Orders</h1>
-    <p class="text-secondary mb-0">Order management is prepared in the data model and ready for the next project phase.</p>
+@await Html.PartialAsync("_StatusMessage")
+
+<div class="page-header">
+    <div>
+        <p class="page-kicker">Sales desk</p>
+        <h1>Orders</h1>
+        <p>Create customer orders, complete sales, and let StockPilot update inventory automatically.</p>
+    </div>
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    {
+        <a class="btn btn-primary" asp-action="Create">New Order</a>
+    }
 </div>
 
-<section class="surface">
+<form method="get" class="surface filter-bar mb-4">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-5 col-lg-3">
+            <label class="form-label" for="status">Status</label>
+            <select class="form-select" id="status" name="status">
+                <option value="">All orders</option>
+                @foreach (OrderStatus status in Enum.GetValues<OrderStatus>())
+                {
+                    <option value="@status" selected="@(selectedStatus == status.ToString() ? "selected" : null)">@status</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 d-grid">
+            <button class="btn btn-outline-primary" type="submit">Apply</button>
+        </div>
+    </div>
+</form>
+
+<section class="surface table-surface">
     <div class="table-responsive">
         <table class="table align-middle">
             <thead>
                 <tr>
-                    <th>Order Number</th>
+                    <th>Order</th>
                     <th>Customer</th>
                     <th>Status</th>
                     <th class="text-end">Items</th>
                     <th class="text-end">Total</th>
                     <th>Date</th>
+                    <th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,19 +57,31 @@
                 foreach (var order in Model)
                 {
                     <tr>
-                        <td>@order.OrderNumber</td>
-                        <td>@(order.CustomerName ?? "-")</td>
-                        <td>@order.Status</td>
+                        <td>
+                            <a class="fw-semibold" asp-action="Details" asp-route-id="@order.OrderId">@order.OrderNumber</a>
+                            <div class="small text-secondary">Created @order.CreatedAt.ToLocalTime().ToString("MMM d, yyyy")</div>
+                        </td>
+                        <td>
+                            @(order.CustomerName ?? "Walk-in customer")
+                            @if (!string.IsNullOrWhiteSpace(order.CustomerEmail))
+                            {
+                                <div class="small text-secondary">@order.CustomerEmail</div>
+                            }
+                        </td>
+                        <td><span class="status-pill status-@order.Status.ToString().ToLowerInvariant()">@order.Status</span></td>
                         <td class="text-end">@order.OrderItems.Count</td>
-                        <td class="text-end">@order.TotalAmount.ToString("C")</td>
+                        <td class="text-end fw-semibold">@order.TotalAmount.ToString("C")</td>
                         <td>@order.OrderDate.ToLocalTime().ToString("MMM d, yyyy")</td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@order.OrderId">Open</a>
+                        </td>
                     </tr>
                 }
             }
             else
             {
                 <tr>
-                    <td colspan="6" class="text-secondary">No orders have been created yet.</td>
+                    <td colspan="7" class="text-secondary">Orders will appear here as soon as sales are created.</td>
                 </tr>
             }
             </tbody>
