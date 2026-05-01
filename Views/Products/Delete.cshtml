@@ -1,0 +1,30 @@
+@model Product
+
+@{
+    ViewData["Title"] = "Delete Product";
+}
+
+<div class="content-narrow">
+    <div class="mb-4">
+        <h1 class="h2 mb-1">Delete Product</h1>
+        <p class="text-secondary mb-0">@Model.Name</p>
+    </div>
+    <form asp-action="Delete" class="surface">
+        <input type="hidden" asp-for="ProductId" />
+        <div class="alert alert-warning">
+            Products with stock movement or order history will be marked inactive instead of removed.
+        </div>
+        <dl class="row detail-list">
+            <dt class="col-sm-4">SKU</dt>
+            <dd class="col-sm-8">@Model.SKU</dd>
+            <dt class="col-sm-4">Category</dt>
+            <dd class="col-sm-8">@Model.Category?.Name</dd>
+            <dt class="col-sm-4">Stock</dt>
+            <dd class="col-sm-8">@Model.QuantityInStock</dd>
+        </dl>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

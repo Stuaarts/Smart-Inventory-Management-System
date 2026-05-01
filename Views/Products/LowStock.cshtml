@@ -1,0 +1,59 @@
+@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Low Stock";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Low Stock Alerts</h1>
+        <p class="text-secondary mb-0">Products at or below their configured minimum stock level.</p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Index">Back to Products</a>
+</div>
+
+<section class="surface">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Supplier</th>
+                    <th class="text-end">Current Stock</th>
+                    <th class="text-end">Minimum Stock</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Any())
+            {
+                foreach (var product in Model)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@product.ProductId">@product.Name</a>
+                            <div class="small text-secondary">@product.SKU</div>
+                        </td>
+                        <td>@product.Category?.Name</td>
+                        <td>@(product.Supplier?.Name ?? "-")</td>
+                        <td class="text-end">@product.QuantityInStock</td>
+                        <td class="text-end">@product.MinimumStockLevel</td>
+                        <td>@await Html.PartialAsync("_StockBadge", product)</td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary" asp-controller="StockMovements" asp-action="Create" asp-route-productId="@product.ProductId">Restock</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-secondary">No current low-stock alerts.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

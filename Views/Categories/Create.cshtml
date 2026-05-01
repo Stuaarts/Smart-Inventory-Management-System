@@ -1,0 +1,23 @@
+@model Category
+
+@{
+    ViewData["Title"] = "Add Category";
+}
+
+<div class="content-narrow">
+    <div class="mb-4">
+        <h1 class="h2 mb-1">Add Category</h1>
+        <p class="text-secondary mb-0">Create a product category.</p>
+    </div>
+    <form asp-action="Create" class="surface">
+        @await Html.PartialAsync("_CategoryForm", Model)
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

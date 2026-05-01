@@ -1,0 +1,25 @@
+@model Category
+
+@{
+    ViewData["Title"] = "Delete Category";
+}
+
+<div class="content-narrow">
+    <div class="mb-4">
+        <h1 class="h2 mb-1">Delete Category</h1>
+        <p class="text-secondary mb-0">@Model.Name</p>
+    </div>
+    <form asp-action="Delete" class="surface">
+        <input type="hidden" asp-for="CategoryId" />
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        @if (Model.Products.Any())
+        {
+            <div class="alert alert-warning">This category has @Model.Products.Count product(s) assigned.</div>
+        }
+        <p>Delete this category?</p>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger" disabled="@(Model.Products.Any() ? "disabled" : null)">Delete</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

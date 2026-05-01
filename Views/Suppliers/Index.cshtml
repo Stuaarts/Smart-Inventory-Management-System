@@ -1,0 +1,62 @@
+@model IEnumerable<Supplier>
+
+@{
+    ViewData["Title"] = "Suppliers";
+}
+
+@await Html.PartialAsync("_StatusMessage")
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Suppliers</h1>
+        <p class="text-secondary mb-0">Manage product sources and contact details.</p>
+    </div>
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Add Supplier</a>
+    }
+</div>
+
+<section class="surface">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th class="text-end">Products</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var supplier in Model)
+            {
+                <tr>
+                    <td><a asp-action="Details" asp-route-id="@supplier.SupplierId">@supplier.Name</a></td>
+                    <td>@(supplier.ContactName ?? "-")</td>
+                    <td>@(supplier.Email ?? "-")</td>
+                    <td>@(supplier.Phone ?? "-")</td>
+                    <td class="text-end">@supplier.Products.Count</td>
+                    <td><span class="badge @(supplier.IsActive ? "text-bg-success" : "text-bg-secondary")">@(supplier.IsActive ? "Active" : "Inactive")</span></td>
+                    <td class="text-end">
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@supplier.SupplierId">Details</a>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                            {
+                                <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@supplier.SupplierId">Edit</a>
+                            }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@supplier.SupplierId">Delete</a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

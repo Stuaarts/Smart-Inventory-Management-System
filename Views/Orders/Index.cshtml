@@ -1,0 +1,49 @@
+@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<div class="mb-4">
+    <h1 class="h2 mb-1">Orders</h1>
+    <p class="text-secondary mb-0">Order management is prepared in the data model and ready for the next project phase.</p>
+</div>
+
+<section class="surface">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Order Number</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th class="text-end">Items</th>
+                    <th class="text-end">Total</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Any())
+            {
+                foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.OrderNumber</td>
+                        <td>@(order.CustomerName ?? "-")</td>
+                        <td>@order.Status</td>
+                        <td class="text-end">@order.OrderItems.Count</td>
+                        <td class="text-end">@order.TotalAmount.ToString("C")</td>
+                        <td>@order.OrderDate.ToLocalTime().ToString("MMM d, yyyy")</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-secondary">No orders have been created yet.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

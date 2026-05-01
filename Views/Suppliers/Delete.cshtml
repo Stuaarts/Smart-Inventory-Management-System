@@ -1,0 +1,24 @@
+@model Supplier
+
+@{
+    ViewData["Title"] = "Delete Supplier";
+}
+
+<div class="content-narrow">
+    <div class="mb-4">
+        <h1 class="h2 mb-1">Delete Supplier</h1>
+        <p class="text-secondary mb-0">@Model.Name</p>
+    </div>
+    <form asp-action="Delete" class="surface">
+        <input type="hidden" asp-for="SupplierId" />
+        @if (Model.Products.Any())
+        {
+            <div class="alert alert-warning">This supplier has products assigned and will be marked inactive.</div>
+        }
+        <p>Delete or deactivate this supplier?</p>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger">Confirm</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,133 @@
+@model ProductIndexViewModel
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+@await Html.PartialAsync("_StatusMessage")
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Products</h1>
+        <p class="text-secondary mb-0">Search, filter, sort, and manage inventory records.</p>
+    </div>
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Add Product</a>
+    }
+</div>
+
+<form method="get" class="surface mb-4">
+    <div class="row g-3 align-items-end">
+        <div class="col-lg-3">
+            <label class="form-label" asp-for="SearchString">Search</label>
+            <input class="form-control" asp-for="SearchString" name="searchString" placeholder="Name, SKU, barcode" />
+        </div>
+        <div class="col-md-6 col-lg-2">
+            <label class="form-label" asp-for="CategoryId">Category</label>
+            <select class="form-select" asp-for="CategoryId" name="categoryId" asp-items="Model.CategoryOptions">
+                <option value="">All categories</option>
+            </select>
+        </div>
+        <div class="col-md-6 col-lg-2">
+            <label class="form-label" asp-for="SupplierId">Supplier</label>
+            <select class="form-select" asp-for="SupplierId" name="supplierId" asp-items="Model.SupplierOptions">
+                <option value="">All suppliers</option>
+            </select>
+        </div>
+        <div class="col-md-6 col-lg-2">
+            <label class="form-label" asp-for="StockStatus">Stock Status</label>
+            <select class="form-select" asp-for="StockStatus" name="stockStatus" asp-items="Model.StockStatusOptions">
+                <option value="">All statuses</option>
+            </select>
+        </div>
+        <div class="col-md-6 col-lg-2">
+            <label class="form-label" asp-for="SortOrder">Sort</label>
+            <select class="form-select" asp-for="SortOrder" name="sortOrder" asp-items="Model.SortOptions"></select>
+        </div>
+        <div class="col-lg-1 d-grid">
+            <button class="btn btn-outline-primary" type="submit">Apply</button>
+        </div>
+    </div>
+</form>
+
+<section class="surface">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Supplier</th>
+                    <th class="text-end">Cost</th>
+                    <th class="text-end">Price</th>
+                    <th class="text-end">Stock</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Products.Any())
+            {
+                foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.ProductId" class="fw-semibold">@item.Name</a>
+                            <div class="small text-secondary">@item.SKU</div>
+                        </td>
+                        <td>@item.Category?.Name</td>
+                        <td>@(item.Supplier?.Name ?? "-")</td>
+                        <td class="text-end">@item.CostPrice.ToString("C")</td>
+                        <td class="text-end">@item.UnitPrice.ToString("C")</td>
+                        <td class="text-end">@item.QuantityInStock / @item.MinimumStockLevel</td>
+                        <td>@await Html.PartialAsync("_StockBadge", item)</td>
+                        <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                                <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.ProductId">Details</a>
+                                <a class="btn btn-outline-primary" asp-controller="StockMovements" asp-action="Create" asp-route-productId="@item.ProductId">Stock</a>
+                                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                                {
+                                    <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>
+                                }
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="text-secondary">No products match the current filters.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <span class="text-secondary small">Page @Model.Products.PageIndex of @Math.Max(Model.Products.TotalPages, 1)</span>
+        <div class="btn-group">
+            <a class="btn btn-outline-secondary @(Model.Products.HasPreviousPage ? "" : "disabled")"
+               asp-action="Index"
+               asp-route-pageNumber="@(Model.Products.PageIndex - 1)"
+               asp-route-searchString="@Model.SearchString"
+               asp-route-categoryId="@Model.CategoryId"
+               asp-route-supplierId="@Model.SupplierId"
+               asp-route-stockStatus="@Model.StockStatus"
+               asp-route-sortOrder="@Model.SortOrder">Previous</a>
+            <a class="btn btn-outline-secondary @(Model.Products.HasNextPage ? "" : "disabled")"
+               asp-action="Index"
+               asp-route-pageNumber="@(Model.Products.PageIndex + 1)"
+               asp-route-searchString="@Model.SearchString"
+               asp-route-categoryId="@Model.CategoryId"
+               asp-route-supplierId="@Model.SupplierId"
+               asp-route-stockStatus="@Model.StockStatus"
+               asp-route-sortOrder="@Model.SortOrder">Next</a>
+        </div>
+    </div>
+</section>

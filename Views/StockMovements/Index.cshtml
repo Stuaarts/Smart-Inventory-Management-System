@@ -1,0 +1,84 @@
+@model IEnumerable<StockMovement>
+
+@{
+    ViewData["Title"] = "Stock Movements";
+    var selectedMovementType = ViewData["MovementType"] as StockMovementType?;
+}
+
+@await Html.PartialAsync("_StatusMessage")
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Stock Movements</h1>
+        <p class="text-secondary mb-0">Audit trail for every stock change.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Record Movement</a>
+</div>
+
+<form method="get" class="surface mb-4">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label" for="productId">Product</label>
+            <select class="form-select" id="productId" name="productId" asp-items="ViewBag.ProductId">
+                <option value="">All products</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label" for="movementType">Movement Type</label>
+            <select class="form-select" id="movementType" name="movementType">
+                <option value="">All movements</option>
+                @foreach (StockMovementType type in Enum.GetValues<StockMovementType>())
+                {
+                    <option value="@type" selected="@(selectedMovementType == type ? "selected" : null)">@type.GetDisplayName()</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 d-grid">
+            <button class="btn btn-outline-primary" type="submit">Apply</button>
+        </div>
+    </div>
+</form>
+
+<section class="surface">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Type</th>
+                    <th class="text-end">Qty</th>
+                    <th class="text-end">Previous</th>
+                    <th class="text-end">New</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Any())
+            {
+                foreach (var movement in Model)
+                {
+                    <tr>
+                        <td>@movement.CreatedAt.ToLocalTime().ToString("MMM d, yyyy h:mm tt")</td>
+                        <td>
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@movement.ProductId">@movement.Product?.Name</a>
+                            <div class="small text-secondary">@movement.Product?.SKU</div>
+                        </td>
+                        <td>@movement.MovementType.GetDisplayName()</td>
+                        <td class="text-end">@movement.Quantity</td>
+                        <td class="text-end">@movement.PreviousQuantity</td>
+                        <td class="text-end">@movement.NewQuantity</td>
+                        <td>@(movement.Reason ?? "-")</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-secondary">No stock movements match the current filters.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

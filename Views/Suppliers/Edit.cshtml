@@ -1,0 +1,23 @@
+@model Supplier
+
+@{
+    ViewData["Title"] = "Edit Supplier";
+}
+
+<div class="content-narrow">
+    <div class="mb-4">
+        <h1 class="h2 mb-1">Edit Supplier</h1>
+        <p class="text-secondary mb-0">@Model.Name</p>
+    </div>
+    <form asp-action="Edit" class="surface">
+        @await Html.PartialAsync("_SupplierForm", Model)
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

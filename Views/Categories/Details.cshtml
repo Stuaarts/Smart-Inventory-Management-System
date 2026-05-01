@@ -1,0 +1,58 @@
+@model Category
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">@Model.Name</h1>
+        <p class="text-secondary mb-0">@(Model.Description ?? "No description")</p>
+    </div>
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    {
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.CategoryId">Edit</a>
+    }
+</div>
+
+<section class="surface">
+    <div class="section-heading">
+        <h2>Products</h2>
+        <span class="text-secondary">@Model.Products.Count items</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th class="text-end">Stock</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Products.Any())
+            {
+                foreach (var product in Model.Products)
+                {
+                    <tr>
+                        <td>
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId">@product.Name</a>
+                            <div class="small text-secondary">@product.SKU</div>
+                        </td>
+                        <td class="text-end">@product.QuantityInStock</td>
+                        <td>@await Html.PartialAsync("_StockBadge", product)</td>
+                        <td class="text-end"><a asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId">Open</a></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-secondary">No products in this category.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

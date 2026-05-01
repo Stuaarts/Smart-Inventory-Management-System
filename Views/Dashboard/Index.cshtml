@@ -1,0 +1,123 @@
+@model DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@await Html.PartialAsync("_StatusMessage")
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Dashboard</h1>
+        <p class="text-secondary mb-0">Inventory health, stock alerts, and recent activity.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" asp-controller="Products" asp-action="LowStock">Low Stock</a>
+        <a class="btn btn-primary" asp-controller="StockMovements" asp-action="Create">Record Movement</a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <span>Total Products</span>
+            <strong>@Model.TotalProducts</strong>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <span>Low Stock Items</span>
+            <strong>@Model.LowStockCount</strong>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <span>Out of Stock</span>
+            <strong>@Model.OutOfStockCount</strong>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <span>Inventory Value</span>
+            <strong>@Model.TotalInventoryValue.ToString("C")</strong>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-7">
+        <section class="surface">
+            <div class="section-heading">
+                <h2>Low Stock Products</h2>
+                <a asp-controller="Products" asp-action="LowStock">View all</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Current</th>
+                            <th>Minimum</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if (Model.LowStockProducts.Any())
+                    {
+                        foreach (var product in Model.LowStockProducts)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.ProductId">@product.Name</a>
+                                    <div class="small text-secondary">@product.SKU</div>
+                                </td>
+                                <td>@product.Category?.Name</td>
+                                <td>@product.QuantityInStock</td>
+                                <td>@product.MinimumStockLevel</td>
+                                <td>@await Html.PartialAsync("_StockBadge", product)</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-secondary">No low-stock products.</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <div class="col-xl-5">
+        <section class="surface">
+            <div class="section-heading">
+                <h2>Recent Movements</h2>
+                <a asp-controller="StockMovements" asp-action="Index">View all</a>
+            </div>
+            <div class="activity-list">
+            @if (Model.RecentStockMovements.Any())
+            {
+                foreach (var movement in Model.RecentStockMovements)
+                {
+                    <div class="activity-row">
+                        <div>
+                            <strong>@movement.Product?.Name</strong>
+                            <div class="small text-secondary">@movement.MovementType.GetDisplayName() by @movement.Quantity units</div>
+                        </div>
+                        <div class="text-end">
+                            <span class="fw-semibold">@movement.PreviousQuantity -> @movement.NewQuantity</span>
+                            <div class="small text-secondary">@movement.CreatedAt.ToLocalTime().ToString("MMM d, h:mm tt")</div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-secondary mb-0">No stock movements yet.</p>
+            }
+            </div>
+        </section>
+    </div>
+</div>

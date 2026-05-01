@@ -1,0 +1,58 @@
+@model IEnumerable<Category>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+@await Html.PartialAsync("_StatusMessage")
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Categories</h1>
+        <p class="text-secondary mb-0">Group products for filtering and reporting.</p>
+    </div>
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Add Category</a>
+    }
+</div>
+
+<section class="surface">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th class="text-end">Products</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a asp-action="Details" asp-route-id="@item.CategoryId">@item.Name</a></td>
+                    <td>@(item.Description ?? "-")</td>
+                    <td class="text-end">@item.Products.Count</td>
+                    <td><span class="badge @(item.IsActive ? "text-bg-success" : "text-bg-secondary")">@(item.IsActive ? "Active" : "Inactive")</span></td>
+                    <td class="text-end">
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.CategoryId">Details</a>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                            {
+                                <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a>
+                            }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>
