@@ -8,6 +8,22 @@ Built with ASP.NET Core MVC, Entity Framework Core, PostgreSQL, ASP.NET Core Ide
 
 StockPilot is deployed on Render: [https://stockpilot-dtnp.onrender.com](https://stockpilot-dtnp.onrender.com)
 
+## Showcase
+
+Walkthrough video: [docs/showcase/videos/stockpilot-demo.webm](docs/showcase/videos/stockpilot-demo.webm)
+
+| Landing Page | Dashboard | Product Management |
+| --- | --- | --- |
+| ![StockPilot landing page](docs/showcase/screenshots/01-home.png) | ![StockPilot dashboard](docs/showcase/screenshots/03-dashboard.png) | ![StockPilot product management](docs/showcase/screenshots/04-products.png) |
+
+| Low Stock Alerts | Orders | Stock Movements |
+| --- | --- | --- |
+| ![StockPilot low stock alerts](docs/showcase/screenshots/05-low-stock-alerts.png) | ![StockPilot orders page](docs/showcase/screenshots/06-orders.png) | ![StockPilot stock movements page](docs/showcase/screenshots/07-stock-movements.png) |
+
+| Authentication | Admin Users | Mobile Dashboard |
+| --- | --- | --- |
+| ![StockPilot login page](docs/showcase/screenshots/02-login.png) | ![StockPilot admin users page](docs/showcase/screenshots/08-admin-users.png) | ![StockPilot mobile dashboard](docs/showcase/screenshots/09-mobile-dashboard.png) |
+
 ## Features
 
 - Secure login and role-based access for Admin, Manager, and Staff users
