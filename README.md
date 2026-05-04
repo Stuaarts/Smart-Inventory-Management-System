@@ -4,6 +4,10 @@ StockPilot is an inventory management platform for small business teams that nee
 
 Built with ASP.NET Core MVC, Entity Framework Core, PostgreSQL, ASP.NET Core Identity, Razor Views, and Bootstrap.
 
+## Live Demo
+
+StockPilot is deployed on Render: [https://stockpilot-dtnp.onrender.com](https://stockpilot-dtnp.onrender.com)
+
 ## Features
 
 - Secure login and role-based access for Admin, Manager, and Staff users
@@ -67,12 +71,10 @@ The Blueprint creates:
 
 The app reads Render's `PORT` variable, converts Render's PostgreSQL URL into an Npgsql connection string, applies EF Core migrations on startup, and seeds demo data when the database is empty.
 
-Current demo deployment plan:
+Current demo deployment:
 
-1. Create a Render Blueprint from this GitHub repository.
-2. Select `render.yaml`.
-3. Deploy the generated web service and Postgres database.
-4. Open the generated `onrender.com` URL and sign in with one of the demo accounts above.
+- Web service: [https://stockpilot-dtnp.onrender.com](https://stockpilot-dtnp.onrender.com)
+- Database: Render Postgres
 
 Note: Render's free PostgreSQL database is intended for demos and expires after 30 days.
 
