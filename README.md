@@ -55,6 +55,27 @@ Built with ASP.NET Core MVC, Entity Framework Core, PostgreSQL, ASP.NET Core Ide
 
 On startup, StockPilot applies EF Core migrations and seeds demo roles, users, categories, suppliers, products, stock movements, and audit logs.
 
+## Render Deployment
+
+The repository includes a `Dockerfile` and `render.yaml` Blueprint for deploying StockPilot on Render.
+
+The Blueprint creates:
+
+- A Docker-based Render web service named `stockpilot`
+- A Render Postgres database named `stockpilot-postgres`
+- A `DATABASE_URL` environment variable connected to the database's internal connection string
+
+The app reads Render's `PORT` variable, converts Render's PostgreSQL URL into an Npgsql connection string, applies EF Core migrations on startup, and seeds demo data when the database is empty.
+
+Current demo deployment plan:
+
+1. Create a Render Blueprint from this GitHub repository.
+2. Select `render.yaml`.
+3. Deploy the generated web service and Postgres database.
+4. Open the generated `onrender.com` URL and sign in with one of the demo accounts above.
+
+Note: Render's free PostgreSQL database is intended for demos and expires after 30 days.
+
 ## Database Design
 
 - `Products`: catalog records with SKU, prices, stock levels, category, supplier, and active status
@@ -80,7 +101,7 @@ On startup, StockPilot applies EF Core migrations and seeds demo roles, users, c
 
 ## Future Enhancements
 
-- Deployment and production environment setup
+- Production deployment hardening after the demo environment is live
 - Product image upload
 - CSV export
 - PDF reports

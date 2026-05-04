@@ -1,0 +1,14 @@
+.git/
+.github/
+.vs/
+.vscode/
+.idea/
+bin/
+obj/
+.tmp-tools/
+.playwright-cli/
+*.log
+*.user
+*.suo
+appsettings.Local.json
+docker-compose.yml
