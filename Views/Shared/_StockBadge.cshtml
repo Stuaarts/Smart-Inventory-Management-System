@@ -2,17 +2,17 @@
 
 @if (!Model.IsActive)
 {
-    <span class="badge text-bg-secondary">Inactive</span>
+    <span class="badge bg-secondary">Inactive</span>
 }
 else if (Model.IsOutOfStock)
 {
-    <span class="badge text-bg-danger">Out of Stock</span>
+    <span class="badge bg-danger">Out of Stock</span>
 }
 else if (Model.IsLowStock)
 {
-    <span class="badge text-bg-warning">Low Stock</span>
+    <span class="badge bg-warning text-dark">Low Stock</span>
 }
 else
 {
-    <span class="badge text-bg-success">In Stock</span>
+    <span class="badge bg-success">In Stock</span>
 }
