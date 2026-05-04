@@ -1,0 +1,121 @@
+Portfolio Context - StockPilot Smart Inventory Management System
+
+Project name:
+StockPilot - Smart Inventory Management System
+
+Live demo:
+https://stockpilot-dtnp.onrender.com
+
+GitHub repository:
+https://github.com/Stuaarts/Smart-Inventory-Management-System
+
+Project owner:
+Lucas Tavares Criscuolo
+
+Short portfolio description:
+StockPilot is a full-stack inventory management web application for small business operations. It helps teams manage products, categories, suppliers, stock levels, stock movement history, sales orders, users, roles, low-stock alerts, and inventory dashboard metrics.
+
+Long portfolio description:
+Built a full-stack inventory management system using ASP.NET Core MVC, Entity Framework Core, PostgreSQL, ASP.NET Core Identity, Razor Views, Bootstrap, and custom CSS. The application includes role-based authorization for Admin, Manager, and Staff users, CRUD workflows for inventory records, product search and filtering, dashboard statistics, low-stock and out-of-stock alerts, stock movement tracking, order workflows, audit logs, seeded demo data, Docker support, and deployment on Render with PostgreSQL.
+
+Tech stack:
+- ASP.NET Core MVC
+- C#
+- Entity Framework Core
+- PostgreSQL
+- Npgsql EF Core provider
+- ASP.NET Core Identity
+- Razor Views
+- Bootstrap
+- HTML
+- CSS
+- JavaScript
+- Docker
+- Render
+- GitHub
+
+Key skills demonstrated:
+- Full-stack web development
+- MVC architecture
+- Authentication and authorization
+- Role-based access control
+- CRUD operations
+- Database design
+- Entity relationships
+- EF Core migrations
+- LINQ querying
+- Search, filter, sorting, and pagination
+- Dashboard/statistics design
+- Business logic
+- Data validation
+- Stock movement history
+- Order processing
+- Audit logging
+- Responsive UI design
+- Deployment basics
+- Git/GitHub documentation
+
+Demo accounts:
+Admin: admin@demo.com / Demo123!
+Manager: manager@demo.com / Demo123!
+Staff: staff@demo.com / Demo123!
+
+Showcase assets:
+- screenshots/01-home.png
+  Landing page with product positioning and dashboard preview.
+
+- screenshots/02-login.png
+  Custom login page using ASP.NET Core Identity.
+
+- screenshots/03-dashboard.png
+  Main dashboard with product totals, stock alerts, inventory value, revenue potential, recent movements, and recent orders.
+
+- screenshots/04-products.png
+  Product management page with search, filters, sorting, stock status badges, and product actions.
+
+- screenshots/05-low-stock-alerts.png
+  Low-stock and out-of-stock alert page showing products that need restocking.
+
+- screenshots/06-orders.png
+  Sales order list and order workflow entry point.
+
+- screenshots/07-stock-movements.png
+  Stock movement history showing inventory changes over time.
+
+- screenshots/08-admin-users.png
+  Admin user management page showing role-based access levels.
+
+- screenshots/09-mobile-dashboard.png
+  Mobile dashboard capture showing responsive layout.
+
+- videos/stockpilot-demo.webm
+  Short walkthrough video showing the deployed app flow across the landing page, dashboard, products, low-stock alerts, orders, stock movements, and admin users.
+
+Suggested portfolio usage:
+- Use 03-dashboard.png as the main hero/cover image for the project.
+- Use 04-products.png to show the core inventory management workflow.
+- Use 05-low-stock-alerts.png to highlight business logic.
+- Use 07-stock-movements.png to show inventory history/audit-style functionality.
+- Use 09-mobile-dashboard.png if the portfolio has a responsive/mobile section.
+- Link stockpilot-demo.webm as a "Watch demo" or "Project walkthrough" asset.
+
+Suggested portfolio title:
+StockPilot - Smart Inventory Management System
+
+Suggested portfolio subtitle:
+Full-stack ASP.NET Core MVC inventory management platform with PostgreSQL, role-based access, stock tracking, dashboard analytics, and Render deployment.
+
+Suggested project highlights:
+- Built role-based authentication and authorization with ASP.NET Core Identity.
+- Designed PostgreSQL data models and EF Core relationships for products, categories, suppliers, orders, order items, stock movements, and audit logs.
+- Implemented product search, category/supplier filters, stock status filters, sorting, and pagination.
+- Added dashboard metrics for inventory value, potential revenue, low-stock items, out-of-stock items, recent movements, and orders.
+- Implemented stock movement tracking so inventory changes are recorded instead of only updating final quantity.
+- Deployed the application on Render with PostgreSQL and documented the project with screenshots, demo accounts, and setup steps.
+
+Notes for Codex updating a portfolio project:
+- Prefer using the local assets in this folder instead of screenshotting the site again unless newer visuals are needed.
+- Keep the live demo link visible near the project CTA.
+- Keep the GitHub repository link visible near the live demo link.
+- Do not expose secrets or deployment credentials.
+- Mention that the Render PostgreSQL demo database is on a free plan and may expire/reset if describing long-term availability.
